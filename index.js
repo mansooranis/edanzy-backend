@@ -1,6 +1,9 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const redis = require('redis');
+const cookieParser = require('cookie-parser');
 require('dotenv/config');
 var cors = require("cors");
 
@@ -12,16 +15,24 @@ const userRoute = require("./routes/users")
 //Enabling Cors
 app.use(cors());
 
-// Connect to DB
-mongoose.connect(process.env.DB_SRV, {useNewUrlParser : true, useUnifiedTopology: true},()=>console.log('connected to db!'));
-
 // MiddleWare
 app.use(express.json());
+app.use(bodyParser.urlencoded())
+app.use(cookieParser());
+
+// Connect to DB
+mongoose.connect(process.env.DB_SRV, {useNewUrlParser : true, useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true},()=>console.log('connected to db!'));
 
 // Route Middleware
 app.use('/api/user', authRoute);
 app.use('/api/posts', postRoute);
 app.use("/api", userRoute);
 
+
+app.use((req, res)=>{
+    res.sendStatus(404);
+});
 
 app.listen(5000, () => {console.log("Server running on port 6000")});
