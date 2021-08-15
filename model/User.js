@@ -7,12 +7,12 @@ const userSchema = new mongoose.Schema({
         max : 255,
         min : 6
     },
-    fistName:{
+    fistname:{
         type:String,
         required : true,
         min : 6
     },
-    lastName:{
+    lastname:{
         type: String,
         required: true,
         max : 40
