@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const redis = require('redis');
 const cookieParser = require('cookie-parser');
+const errorController = require('./controllers/error');
 require('dotenv/config');
 var cors = require("cors");
 
@@ -31,8 +32,6 @@ app.use('/api/posts', postRoute);
 app.use("/api", userRoute);
 
 
-app.use((req, res)=>{
-    res.sendStatus(404);
-});
+app.use(errorController.get404Error);
 
 app.listen(5000, () => {console.log("Server running on port 6000")});
