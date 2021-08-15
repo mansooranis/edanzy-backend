@@ -4,6 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const redis = require('redis');
 const cookieParser = require('cookie-parser');
+const errorController = require('./controllers/error');
 require('dotenv/config');
 
 // Import Routes
@@ -24,8 +25,6 @@ mongoose.connect(process.env.DB_SRV, {useNewUrlParser : true, useUnifiedTopology
 app.use('/api/v1/user', authRoute);
 app.use('/api/v1/posts', postRoute);
 
-app.use((req, res)=>{
-    res.sendStatus(404);
-});
+app.use(errorController.get404Error);
 
 app.listen(5000);
